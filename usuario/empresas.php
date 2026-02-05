@@ -69,9 +69,9 @@ require_once "../auth/auth_check.php";
                     <p class="card-text">
                         Consulta el estado de tus solicitudes y devoluciones.
                     </p>
-                    <button class="btn btn-secondary" disabled>
-                        Próximamente
-                    </button>
+                    <a href="mis_prestamos.php" class="btn btn-primary">
+                        Ir
+                    </a>
                 </div>
             </div>
         </div>
