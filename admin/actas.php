@@ -84,6 +84,12 @@ $actas = mysqli_query($conn, "
                     <input type="text" id="ubicacion" class="form-control" placeholder="Archivo / Caja / Estante">
                 </div>
 
+                <div class="col-md-4">
+                    <label class="form-label">Foto de la portada (opcional)</label>
+                    <input type="file" id="foto" class="form-control"
+                        accept="image/png, image/jpeg">
+                </div>
+
                 <div class="col-md-1 d-grid align-items-end">
                     <button class="btn btn-primary mt-4" onclick="agregarActa()">
                         Agregar
@@ -104,6 +110,7 @@ $actas = mysqli_query($conn, "
                 <table class="table table-bordered table-hover align-middle">
                     <thead class="table-dark">
                         <tr>
+                            <th>Portada</th>
                             <th>Empresa</th>
                             <th>Tipo</th>
                             <th>Ubicación</th>
@@ -114,6 +121,15 @@ $actas = mysqli_query($conn, "
 
                     <?php while($a = mysqli_fetch_assoc($actas)){ ?>
                         <tr>
+                            <td class="text-center">
+                                <?php if($a['foto_portada']){ ?>
+                                    <img src="../<?= $a['foto_portada'] ?>"
+                                        style="width:60px; height:auto;"
+                                        class="img-thumbnail">
+                                <?php } else { ?>
+                                    <span class="text-muted">Sin foto</span>
+                                <?php } ?>
+                            </td>
                             <td><?= $a['nombre_empresa'] ?></td>
                             <td><?= $a['tipo_acta'] ?></td>
                             <td><?= $a['ubicacion_fisica'] ?></td>

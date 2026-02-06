@@ -1,15 +1,28 @@
 function agregarActa(){
-  let id_empresa = document.getElementById("empresa").value;
-  let tipo = document.getElementById("tipo").value;
-  let ubicacion = document.getElementById("ubicacion").value;
 
-  $.post("../ajax/acta_add.php", {
-    id_empresa, tipo, ubicacion
-  }, function(resp){
-    alert(resp);
-    location.reload();
-  });
+    let formData = new FormData();
+    formData.append("id_empresa", $("#empresa").val());
+    formData.append("tipo", $("#tipo").val());
+    formData.append("ubicacion", $("#ubicacion").val());
+
+    let foto = document.getElementById("foto").files[0];
+    if(foto){
+        formData.append("foto", foto);
+    }
+
+    $.ajax({
+        url: "../ajax/acta_add.php",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(resp){
+            alert(resp);
+            location.reload();
+        }
+    });
 }
+
 
 function eliminarActa(id){
   if(confirm("¿Eliminar acta?")){
