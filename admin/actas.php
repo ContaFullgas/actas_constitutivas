@@ -29,9 +29,9 @@ $actas = mysqli_query($conn, "
     <div class="container-fluid">
 
         <div class="navbar-nav">
-            <a href="dashboard.php" class="nav-link">Inicio</a>
-            <a href="empresas.php" class="nav-link">Empresas</a>
-            <a href="actas.php" class="nav-link">Actas</a>
+            <a href="dashboard.php" class="nav-link active">Inicio</a>
+            <a href="empresas.php" class="nav-link active">Empresas</a>
+            <a href="actas.php" class="nav-link active">Actas</a>
             <a href="solicitudes.php" class="nav-link active">Solicitudes</a>
             <a href="historial.php" class="nav-link active">Historial</a>
         </div>
@@ -123,13 +123,17 @@ $actas = mysqli_query($conn, "
                         <tr>
                             <td class="text-center">
                                 <?php if($a['foto_portada']){ ?>
-                                    <img src="../<?= $a['foto_portada'] ?>"
-                                        style="width:60px; height:auto;"
-                                        class="img-thumbnail">
+                                    <img 
+                                        src="../<?= $a['foto_portada'] ?>"
+                                        class="img-thumbnail"
+                                        style="width:40px; cursor:pointer;"
+                                        onclick="verImagen('../<?= $a['foto_portada'] ?>')"
+                                        alt="Portada acta">
                                 <?php } else { ?>
                                     <span class="text-muted">Sin foto</span>
                                 <?php } ?>
                             </td>
+
                             <td><?= $a['nombre_empresa'] ?></td>
                             <td><?= $a['tipo_acta'] ?></td>
                             <td><?= $a['ubicacion_fisica'] ?></td>
@@ -151,7 +155,26 @@ $actas = mysqli_query($conn, "
 
 </div>
 
+<!-- MODAL VER IMAGEN -->
+<div class="modal fade" id="modalImagen" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Portada del acta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <img id="imgGrande" src="" class="img-fluid rounded">
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/actas.js"></script>
 
 </body>

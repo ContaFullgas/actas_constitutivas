@@ -32,3 +32,9 @@ function eliminarActa(id){
     });
   }
 }
+
+function verImagen(src){
+    document.getElementById("imgGrande").src = src;
+    let modal = new bootstrap.Modal(document.getElementById('modalImagen'));
+    modal.show();
+}
