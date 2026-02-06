@@ -76,6 +76,21 @@ require_once "../auth/auth_check.php";
             </div>
         </div>
 
+        <!-- CARD: MIS HISTORIAL -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Historial de prestamos</h5>
+                    <p class="card-text">
+                        Consulta el historial de todos tus prestamos.
+                    </p>
+                    <a href="historial.php" class="btn btn-primary">
+                        Ir
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>

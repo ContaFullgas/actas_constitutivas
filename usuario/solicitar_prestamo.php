@@ -42,6 +42,8 @@ $actas = mysqli_query($conn, "
 
         <div class="navbar-nav">
             <a href="empresas.php" class="nav-link">Inicio</a>
+            <a href="mis_prestamos.php" class="nav-link">Mis préstamos</a>
+            <a href="historial.php" class="nav-link active">Historial</a>
         </div>
 
         <span class="navbar-brand ms-2">Control de Actas</span>

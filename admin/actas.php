@@ -29,9 +29,11 @@ $actas = mysqli_query($conn, "
     <div class="container-fluid">
 
         <div class="navbar-nav">
-            <a href="dashboard.php" class="nav-link">
-                Dashboard
-            </a>
+            <a href="dashboard.php" class="nav-link">Inicio</a>
+            <a href="empresas.php" class="nav-link">Empresas</a>
+            <a href="actas.php" class="nav-link">Actas</a>
+            <a href="solicitudes.php" class="nav-link active">Solicitudes</a>
+            <a href="historial.php" class="nav-link active">Historial</a>
         </div>
 
         <span class="navbar-brand ms-2">

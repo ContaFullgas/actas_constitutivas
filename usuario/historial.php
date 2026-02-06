@@ -4,11 +4,12 @@ require_once "../config/db.php";
 
 $id_usuario = $_SESSION['id_usuario'];
 
-$prestamos = mysqli_query($conn, "
+$historial = mysqli_query($conn, "
     SELECT 
-        p.id_prestamo,
         p.estado,
+        p.fecha_solicitud,
         p.fecha_prestamo,
+        p.fecha_devolucion,
         a.tipo_acta,
         a.ubicacion_fisica,
         e.nombre_empresa
@@ -16,8 +17,7 @@ $prestamos = mysqli_query($conn, "
     JOIN actas a ON p.id_acta = a.id_acta
     JOIN empresas e ON a.id_empresa = e.id_empresa
     WHERE p.id_usuario = $id_usuario
-      AND p.estado IN ('prestado','devolucion_pendiente')
-    ORDER BY p.fecha_prestamo DESC
+    ORDER BY p.fecha_solicitud DESC
 ");
 ?>
 
@@ -25,13 +25,10 @@ $prestamos = mysqli_query($conn, "
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mis préstamos</title>
+    <title>Mi historial de préstamos</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body class="bg-light">
 
@@ -41,7 +38,7 @@ $prestamos = mysqli_query($conn, "
 
         <div class="navbar-nav">
             <a href="empresas.php" class="nav-link">Inicio</a>
-            <a href="mis_prestamos.php" class="nav-link active">Mis préstamos</a>
+            <a href="mis_prestamos.php" class="nav-link">Mis préstamos</a>
             <a href="historial.php" class="nav-link active">Historial</a>
         </div>
 
@@ -63,7 +60,7 @@ $prestamos = mysqli_query($conn, "
     <div class="card shadow-sm">
         <div class="card-body">
 
-            <h4 class="mb-3">Mis préstamos activos</h4>
+            <h4 class="mb-3">Historial de préstamos</h4>
 
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
@@ -72,32 +69,34 @@ $prestamos = mysqli_query($conn, "
                             <th>Empresa</th>
                             <th>Acta</th>
                             <th>Ubicación</th>
-                            <th>Fecha préstamo</th>
-                            <th class="text-center">Acción</th>
+                            <th>Estado</th>
+                            <th>Solicitud</th>
+                            <th>Préstamo</th>
+                            <th>Devolución</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                    <?php while($p = mysqli_fetch_assoc($prestamos)){ ?>
+                    <?php while($h = mysqli_fetch_assoc($historial)){ ?>
                         <tr>
-                            <td><?= $p['nombre_empresa'] ?></td>
-                            <td><?= $p['tipo_acta'] ?></td>
-                            <td><?= $p['ubicacion_fisica'] ?></td>
-                            <td><?= $p['fecha_prestamo'] ?></td>
-                            <td class="text-center">
-
-                            <?php if($p['estado'] == 'prestado'){ ?>
-                                <button class="btn btn-sm btn-warning"
-                                    onclick="solicitarDevolucion(<?= $p['id_prestamo'] ?>)">
-                                    Solicitar devolución
-                                </button>
-                            <?php } else { ?>
-                                <span class="badge bg-info text-dark">
-                                    Devolución pendiente
+                            <td><?= $h['nombre_empresa'] ?></td>
+                            <td><?= $h['tipo_acta'] ?></td>
+                            <td><?= $h['ubicacion_fisica'] ?></td>
+                            <td>
+                                <?php
+                                $color = 'secondary';
+                                if($h['estado'] == 'pendiente') $color = 'warning';
+                                if($h['estado'] == 'prestado') $color = 'success';
+                                if($h['estado'] == 'devolucion_pendiente') $color = 'info';
+                                if($h['estado'] == 'rechazado') $color = 'danger';
+                                ?>
+                                <span class="badge bg-<?= $color ?>">
+                                    <?= $h['estado'] ?>
                                 </span>
-                            <?php } ?>
-
                             </td>
+                            <td><?= $h['fecha_solicitud'] ?></td>
+                            <td><?= $h['fecha_prestamo'] ?? '-' ?></td>
+                            <td><?= $h['fecha_devolucion'] ?? '-' ?></td>
                         </tr>
                     <?php } ?>
 
@@ -105,14 +104,10 @@ $prestamos = mysqli_query($conn, "
                 </table>
             </div>
 
-            <div id="msg" class="mt-3"></div>
-
         </div>
     </div>
 
 </div>
-
-<script src="../js/devolucion_usuario.js"></script>
 
 </body>
 </html>
