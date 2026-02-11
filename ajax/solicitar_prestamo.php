@@ -12,14 +12,14 @@ $check = mysqli_query($conn, "
     SELECT id_prestamo
     FROM prestamos
     WHERE id_acta = $id_acta
-      AND id_usuario = $id_usuario
       AND estado IN ('pendiente','prestado','devolucion_pendiente')
 ");
 
 if(mysqli_num_rows($check) > 0){
-    echo "Ya tienes una solicitud activa para esta acta.";
+    echo "Esta acta no está disponible actualmente.";
     exit;
 }
+
 
 /*
   2️⃣ Insertar si no hay duplicado

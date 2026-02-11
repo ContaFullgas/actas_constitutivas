@@ -8,6 +8,8 @@ $actas = mysqli_query($conn, "
     SELECT 
         a.*,
         e.nombre_empresa,
+
+        /* Estado para el usuario actual */
         (
             SELECT p.estado
             FROM prestamos p
@@ -15,10 +17,21 @@ $actas = mysqli_query($conn, "
               AND p.id_usuario = $id_usuario
               AND p.estado IN ('pendiente','prestado','devolucion_pendiente')
             LIMIT 1
-        ) AS estado_prestamo
+        ) AS estado_usuario,
+
+        /* Estado global del acta */
+        (
+            SELECT p.estado
+            FROM prestamos p
+            WHERE p.id_acta = a.id_acta
+              AND p.estado IN ('pendiente','prestado','devolucion_pendiente')
+            LIMIT 1
+        ) AS estado_global
+
     FROM actas a
     JOIN empresas e ON a.id_empresa = e.id_empresa
 ");
+
 
 ?>
 
@@ -102,39 +115,49 @@ $actas = mysqli_query($conn, "
                             <td><?= $a['ubicacion_fisica'] ?></td>
                             <td class="text-center">
 
-                                <?php
-                                if ($a['estado_prestamo'] == null) {
+                            <?php
+                                if ($a['estado_global'] == null) {
                                 ?>
                                     <button class="btn btn-sm btn-primary"
                                         onclick="solicitarPrestamo(<?= $a['id_acta'] ?>)">
                                         Solicitar
                                     </button>
+
                                 <?php
-                                } else if ($a['estado_prestamo'] == 'pendiente') {
+                                } else if ($a['estado_usuario']) {
+
+                                    if ($a['estado_usuario'] == 'pendiente') {
                                 ?>
-                                    <span class="badge bg-warning text-dark">
-                                        Solicitud pendiente
-                                    </span>
+                                        <span class="badge bg-warning text-dark">
+                                            Solicitud pendiente
+                                        </span>
                                 <?php
-                                } else if ($a['estado_prestamo'] == 'prestado') {
+                                    } else if ($a['estado_usuario'] == 'prestado') {
                                 ?>
-                                    <span class="badge bg-success">
-                                        Acta prestada
-                                    </span>
+                                        <span class="badge bg-success">
+                                            Acta prestada
+                                        </span>
                                 <?php
-                                } else if ($a['estado_prestamo'] == 'devolucion_pendiente') {
+                                    } else if ($a['estado_usuario'] == 'devolucion_pendiente') {
                                 ?>
-                                    <span class="badge bg-info text-dark">
-                                        Devolución pendiente
+                                        <span class="badge bg-info text-dark">
+                                            Devolución pendiente
+                                        </span>
+                                <?php
+                                    }
+
+                                } else {
+                                ?>
+                                    <span class="badge bg-secondary">
+                                        No disponible
                                     </span>
                                 <?php
                                 }
                                 ?>
 
-                            </td>
-
-                        </tr>
-                    <?php } ?>
+                                </td>
+                                </tr>
+                            <?php } ?>
 
                     </tbody>
                 </table>
