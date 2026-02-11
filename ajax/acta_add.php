@@ -2,39 +2,53 @@
 require_once "../auth/admin_check.php";
 require_once "../config/db.php";
 
-$id_empresa = $_POST['id_empresa'];
-$tipo = $_POST['tipo'];
-$ubicacion = $_POST['ubicacion'];
+$id_empresa = intval($_POST['id_empresa'] ?? 0);
+$tipo = trim($_POST['tipo'] ?? '');
+$ubicacion = trim($_POST['ubicacion'] ?? '');
+
+if($id_empresa <= 0 || $tipo == '' || $ubicacion == ''){
+    echo "Todos los campos son obligatorios (excepto la foto).";
+    exit;
+}
+
+/* Verificar que la empresa exista */
+$checkEmpresa = mysqli_query($conn, "
+    SELECT id_empresa 
+    FROM empresas 
+    WHERE id_empresa = $id_empresa
+");
+
+if(mysqli_num_rows($checkEmpresa) == 0){
+    echo "La empresa seleccionada no existe.";
+    exit;
+}
 
 $fotoRuta = null;
 
-/*
-  Si viene imagen
-*/
+/* Validar imagen */
 if(isset($_FILES['foto']) && $_FILES['foto']['error'] == 0){
 
     $permitidos = ['image/jpeg','image/png'];
 
-    if(in_array($_FILES['foto']['type'], $permitidos)){
-
-        $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
-        $nombre = "acta_" . time() . "." . $ext;
-        $destino = "../uploads/actas/" . $nombre;
-
-        move_uploaded_file($_FILES['foto']['tmp_name'], $destino);
-
-        // Ruta que se guarda en BD (relativa)
-        $fotoRuta = "uploads/actas/" . $nombre;
+    if(!in_array($_FILES['foto']['type'], $permitidos)){
+        echo "Formato de imagen no permitido.";
+        exit;
     }
+
+    $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+    $nombre = "acta_" . time() . "." . $ext;
+    $destino = "../uploads/actas/" . $nombre;
+
+    move_uploaded_file($_FILES['foto']['tmp_name'], $destino);
+
+    $fotoRuta = "uploads/actas/" . $nombre;
 }
 
-/*
-  Insertar acta
-*/
+/* Insertar */
 $sql = "INSERT INTO actas
 (id_empresa, tipo_acta, ubicacion_fisica, foto_portada)
 VALUES ($id_empresa, '$tipo', '$ubicacion', ".($fotoRuta ? "'$fotoRuta'" : "NULL").")";
 
 mysqli_query($conn, $sql);
 
-echo "Acta registrada correctamente";
+echo "Acta registrada correctamente.";

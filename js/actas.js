@@ -1,9 +1,18 @@
 function agregarActa(){
 
+    let id_empresa = $("#empresa").val();
+    let tipo = $("#tipo").val().trim();
+    let ubicacion = $("#ubicacion").val().trim();
+
+    if(id_empresa === "" || tipo === "" || ubicacion === ""){
+        alert("Todos los campos son obligatorios (excepto la foto).");
+        return;
+    }
+
     let formData = new FormData();
-    formData.append("id_empresa", $("#empresa").val());
-    formData.append("tipo", $("#tipo").val());
-    formData.append("ubicacion", $("#ubicacion").val());
+    formData.append("id_empresa", id_empresa);
+    formData.append("tipo", tipo);
+    formData.append("ubicacion", ubicacion);
 
     let foto = document.getElementById("foto").files[0];
     if(foto){
@@ -22,6 +31,7 @@ function agregarActa(){
         }
     });
 }
+
 
 
 function eliminarActa(id){
