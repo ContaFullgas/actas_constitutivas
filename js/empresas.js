@@ -1,7 +1,13 @@
 function agregarEmpresa(){
-  let nombre = document.getElementById("nombre").value;
-  let rfc = document.getElementById("rfc").value;
+
+  let nombre = document.getElementById("nombre").value.trim();
+  let rfc = document.getElementById("rfc").value.trim();
   let fecha = document.getElementById("fecha").value;
+
+  if(nombre === "" || rfc === "" || fecha === ""){
+      alert("Todos los campos son obligatorios.");
+      return;
+  }
 
   $.post("../ajax/empresa_add.php", {
     nombre, rfc, fecha
@@ -10,6 +16,7 @@ function agregarEmpresa(){
     location.reload();
   });
 }
+
 
 function eliminarEmpresa(id){
   if(confirm("¿Eliminar empresa?")){
