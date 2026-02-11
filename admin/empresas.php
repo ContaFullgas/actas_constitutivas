@@ -24,11 +24,11 @@ $res = mysqli_query($conn, "SELECT * FROM empresas");
     <div class="container-fluid">
 
         <div class="navbar-nav">
-            <a href="dashboard.php" class="nav-link active">Inicio</a>
+            <a href="dashboard.php" class="nav-link">Inicio</a>
             <a href="empresas.php" class="nav-link active">Empresas</a>
-            <a href="actas.php" class="nav-link active">Actas</a>
-            <a href="solicitudes.php" class="nav-link active">Solicitudes</a>
-            <a href="historial.php" class="nav-link active">Historial</a>
+            <a href="actas.php" class="nav-link">Actas</a>
+            <a href="solicitudes.php" class="nav-link">Solicitudes</a>
+            <a href="historial.php" class="nav-link">Historial</a>
         </div>
 
         <span class="navbar-brand ms-2">

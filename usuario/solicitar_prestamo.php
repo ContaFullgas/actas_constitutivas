@@ -72,6 +72,7 @@ $actas = mysqli_query($conn, "
                 <table class="table table-bordered table-hover align-middle">
                     <thead class="table-dark">
                         <tr>
+                            <th>Portada</th>
                             <th>Empresa</th>
                             <th>Tipo de acta</th>
                             <th>Ubicación</th>
@@ -82,6 +83,19 @@ $actas = mysqli_query($conn, "
 
                     <?php while($a = mysqli_fetch_assoc($actas)){ ?>
                         <tr>
+                            <!-- TD para fotografía de acta -->
+                            <td class="text-center">
+                                <?php if($a['foto_portada']){ ?>
+                                    <img
+                                        src="../<?= $a['foto_portada'] ?>"
+                                        class="img-thumbnail"
+                                        style="width:60px; cursor:pointer;"
+                                        onclick="verImagen('../<?= $a['foto_portada'] ?>')"
+                                        alt="Portada acta">
+                                <?php } else { ?>
+                                    <span class="text-muted">Sin foto</span>
+                                <?php } ?>
+                            </td>
                             <td><?= $a['nombre_empresa'] ?></td>
                             <td><?= $a['tipo_acta'] ?></td>
                             <td><?= $a['ubicacion_fisica'] ?></td>
@@ -132,7 +146,27 @@ $actas = mysqli_query($conn, "
 
 </div>
 
+<!-- MODAL VER IMAGEN -->
+<div class="modal fade" id="modalImagen" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Portada del acta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <img id="imgGrande" src="" class="img-fluid rounded">
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/prestamos_usuario.js"></script>
+
 
 </body>
 </html>
