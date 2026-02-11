@@ -38,6 +38,7 @@ $historial = mysqli_query($conn, "
 
         <div class="navbar-nav">
             <a href="empresas.php" class="nav-link">Inicio</a>
+            <a href="solicitar_prestamo.php" class="nav-link">Solicitar prestamo</a>
             <a href="mis_prestamos.php" class="nav-link">Mis préstamos</a>
             <a href="historial.php" class="nav-link active">Historial</a>
         </div>
