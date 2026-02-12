@@ -137,12 +137,25 @@ $actas = mysqli_query($conn, "
                             <td><?= $a['nombre_empresa'] ?></td>
                             <td><?= $a['tipo_acta'] ?></td>
                             <td><?= $a['ubicacion_fisica'] ?></td>
+
                             <td class="text-center">
+                                <button class="btn btn-sm btn-warning"
+                                    onclick="abrirEditarActa(
+                                        <?= $a['id_acta'] ?>,
+                                        <?= $a['id_empresa'] ?>,
+                                        '<?= htmlspecialchars($a['tipo_acta'], ENT_QUOTES) ?>',
+                                        '<?= htmlspecialchars($a['ubicacion_fisica'], ENT_QUOTES) ?>'
+                                    )">
+                                    Editar
+                                </button>
+
                                 <button class="btn btn-sm btn-danger"
                                     onclick="eliminarActa(<?= $a['id_acta'] ?>)">
                                     Eliminar
                                 </button>
+
                             </td>
+
                         </tr>
                     <?php } ?>
 
@@ -172,6 +185,63 @@ $actas = mysqli_query($conn, "
     </div>
   </div>
 </div>
+
+<!-- MODAL EDITAR ACTA -->
+<div class="modal fade" id="modalEditarActa" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Editar acta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <input type="hidden" id="edit_id_acta">
+
+        <div class="mb-3">
+          <label class="form-label">Empresa</label>
+          <select id="edit_empresa" class="form-select">
+            <?php
+              $empresas2 = mysqli_query($conn, "SELECT * FROM empresas");
+              while($e2 = mysqli_fetch_assoc($empresas2)){
+            ?>
+              <option value="<?= $e2['id_empresa'] ?>">
+                <?= $e2['nombre_empresa'] ?>
+              </option>
+            <?php } ?>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Tipo de acta</label>
+          <input type="text" id="edit_tipo" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Ubicación física</label>
+          <input type="text" id="edit_ubicacion" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Cambiar foto (opcional)</label>
+          <input type="file" id="edit_foto" class="form-control"
+                 accept="image/png, image/jpeg">
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="guardarEdicionActa()">
+          Guardar cambios
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
