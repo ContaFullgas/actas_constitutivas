@@ -97,3 +97,15 @@ function guardarEdicionActa(){
         }
     });
 }
+
+//Select ahora se vuelve buscador
+$(document).ready(function(){
+
+    $('#empresa').select2({
+        theme: 'bootstrap-5',
+        placeholder: "Seleccionar empresa...",
+        allowClear: true,
+        width: '100%'
+    });
+
+});

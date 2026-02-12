@@ -15,10 +15,12 @@ $actas = mysqli_query($conn, "
 <head>
     <meta charset="UTF-8">
     <title>Actas | Control de Actas</title>
-
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 Bootstrap theme (opcional pero recomendado) -->
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
@@ -66,6 +68,8 @@ $actas = mysqli_query($conn, "
                 <div class="col-md-4">
                     <label class="form-label">Empresa</label>
                     <select id="empresa" class="form-select">
+                        <option value="">Seleccionar empresa...</option>
+
                         <?php while($e = mysqli_fetch_assoc($empresas)){ ?>
                             <option value="<?= $e['id_empresa'] ?>">
                                 <?= $e['nombre_empresa'] ?>
@@ -245,6 +249,8 @@ $actas = mysqli_query($conn, "
 
 <!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="../js/actas.js"></script>
 
 </body>
