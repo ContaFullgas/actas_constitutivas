@@ -207,15 +207,17 @@ $actas = mysqli_query($conn, "
         <div class="mb-3">
           <label class="form-label">Empresa</label>
           <select id="edit_empresa" class="form-select">
+            <option value="">Seleccionar empresa...</option>
+
             <?php
-              $empresas2 = mysqli_query($conn, "SELECT * FROM empresas");
-              while($e2 = mysqli_fetch_assoc($empresas2)){
+            $empresas2 = mysqli_query($conn, "SELECT * FROM empresas ORDER BY nombre_empresa ASC");
+            while($e2 = mysqli_fetch_assoc($empresas2)){
             ?>
-              <option value="<?= $e2['id_empresa'] ?>">
+            <option value="<?= $e2['id_empresa'] ?>">
                 <?= $e2['nombre_empresa'] ?>
-              </option>
+            </option>
             <?php } ?>
-          </select>
+        </select>
         </div>
 
         <div class="mb-3">

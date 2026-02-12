@@ -52,15 +52,17 @@ function verImagen(src){
 function abrirEditarActa(id, id_empresa, tipo, ubicacion){
 
     $("#edit_id_acta").val(id);
-    $("#edit_empresa").val(id_empresa);
     $("#edit_tipo").val(tipo);
     $("#edit_ubicacion").val(ubicacion);
+
+    $("#edit_empresa").val(id_empresa).trigger('change');
 
     let modal = new bootstrap.Modal(
         document.getElementById("modalEditarActa")
     );
     modal.show();
 }
+
 
 function guardarEdicionActa(){
 
@@ -105,6 +107,26 @@ $(document).ready(function(){
         theme: 'bootstrap-5',
         placeholder: "Seleccionar empresa...",
         allowClear: true,
+        width: '100%'
+    });
+
+});
+
+//Select ahora se vuelve buscador en editar
+$(document).ready(function(){
+
+    $('#empresa').select2({
+        theme: 'bootstrap-5',
+        placeholder: "Seleccionar empresa...",
+        allowClear: true,
+        width: '100%'
+    });
+
+    $('#edit_empresa').select2({
+        theme: 'bootstrap-5',
+        placeholder: "Seleccionar empresa...",
+        allowClear: true,
+        dropdownParent: $('#modalEditarActa'),
         width: '100%'
     });
 
