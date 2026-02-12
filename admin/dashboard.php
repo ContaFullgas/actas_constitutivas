@@ -58,6 +58,10 @@ require_once "../auth/admin_check.php";
                         <a href="historial.php" class="btn btn-info">
                             Historial
                         </a>
+
+                        <a href="usuarios.php" class="btn btn-secondary">
+                            Usuarios
+                        </a>
                     </div>
 
                 </div>

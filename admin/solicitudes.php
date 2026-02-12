@@ -45,6 +45,7 @@ $solicitudes = mysqli_query($conn, "
             <a href="actas.php" class="nav-link">Actas</a>
             <a href="solicitudes.php" class="nav-link active">Solicitudes</a>
             <a href="historial.php" class="nav-link">Historial</a>
+            <a href="usuarios.php" class="nav-link">Usuarios</a>
         </div>
 
         <span class="navbar-brand ms-2">Control de Actas</span>
