@@ -12,16 +12,15 @@ if($id <= 0 || $id_empresa <= 0 || $tipo == '' || $ubicacion == ''){
     exit;
 }
 
-/* Verificar empresa */
-$checkEmpresa = mysqli_query($conn, "
-    SELECT id_empresa FROM empresas
-    WHERE id_empresa = $id_empresa
+/* Obtener imagen actual */
+$consultaActual = mysqli_query($conn, "
+    SELECT foto_portada 
+    FROM actas 
+    WHERE id_acta = $id
 ");
 
-if(mysqli_num_rows($checkEmpresa) == 0){
-    echo "Empresa inválida.";
-    exit;
-}
+$actaActual = mysqli_fetch_assoc($consultaActual);
+$fotoAnterior = $actaActual['foto_portada'] ?? null;
 
 $fotoSQL = "";
 
@@ -39,14 +38,20 @@ if(isset($_FILES['foto']) && $_FILES['foto']['error'] == 0){
     $nombre = "acta_" . time() . "." . $ext;
     $destino = "../uploads/actas/" . $nombre;
 
-    move_uploaded_file($_FILES['foto']['tmp_name'], $destino);
+    if(move_uploaded_file($_FILES['foto']['tmp_name'], $destino)){
 
-    $fotoRuta = "uploads/actas/" . $nombre;
+        $fotoRuta = "uploads/actas/" . $nombre;
 
-    $fotoSQL = ", foto_portada = '$fotoRuta'";
+        /* 🔥 Eliminar imagen anterior si existe */
+        if($fotoAnterior && file_exists("../" . $fotoAnterior)){
+            unlink("../" . $fotoAnterior);
+        }
+
+        $fotoSQL = ", foto_portada = '$fotoRuta'";
+    }
 }
 
-/* Actualizar */
+/* Actualizar datos */
 $sql = "UPDATE actas SET
         id_empresa = $id_empresa,
         tipo_acta = '$tipo',
