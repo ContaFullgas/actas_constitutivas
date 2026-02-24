@@ -51,6 +51,10 @@ require_once "../auth/admin_check.php";
                             Actas
                         </a>
 
+                        <a href="tipos_acta.php" class="btn btn-info">
+                            Tipo actas
+                        </a>
+
                         <a href="solicitudes.php" class="btn btn-warning">
                             Solicitudes
                         </a>

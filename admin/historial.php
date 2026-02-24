@@ -69,6 +69,7 @@ $historial = mysqli_query($conn, "
             <a href="dashboard.php" class="nav-link">Inicio</a>
             <a href="empresas.php" class="nav-link">Empresas</a>
             <a href="actas.php" class="nav-link">Actas</a>
+            <a href="tipos_acta.php" class="nav-link">Tipos actas</a>
             <a href="solicitudes.php" class="nav-link">Solicitudes</a>
             <a href="historial.php" class="nav-link active">Historial</a>
             <a href="usuarios.php" class="nav-link">Usuarios</a>

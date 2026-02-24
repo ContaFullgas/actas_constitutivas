@@ -2,9 +2,9 @@
 require_once "../auth/admin_check.php";
 require_once "../config/db.php";
 
-$usuarios = mysqli_query($conn, "
-    SELECT * FROM usuarios
-    ORDER BY activo DESC, id_usuario ASC
+$tipos = mysqli_query($conn,"
+    SELECT * FROM tipos_acta
+    ORDER BY activo DESC, nombre_tipo ASC
 ");
 ?>
 
@@ -12,7 +12,7 @@ $usuarios = mysqli_query($conn, "
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Usuarios | Control de Actas</title>
+<title>Tipos de Acta | Control de Actas</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -27,10 +27,10 @@ $usuarios = mysqli_query($conn, "
 <a href="dashboard.php" class="nav-link">Inicio</a>
 <a href="empresas.php" class="nav-link">Empresas</a>
 <a href="actas.php" class="nav-link">Actas</a>
-<a href="tipos_acta.php" class="nav-link">Tipos actas</a>
+<a href="tipos_acta.php" class="nav-link active">Tipos actas</a>
 <a href="solicitudes.php" class="nav-link">Solicitudes</a>
 <a href="historial.php" class="nav-link">Historial</a>
-<a href="usuarios.php" class="nav-link active">Usuarios</a>
+<a href="usuarios.php" class="nav-link">Usuarios</a>
 </div>
 
 <span class="navbar-brand ms-2">
@@ -51,31 +51,27 @@ Cerrar sesión
 
 <div class="container mt-4">
 
-<h3 class="mb-3">Usuarios</h3>
+<h3 class="mb-3">Tipos de Acta</h3>
 
 <button class="btn btn-primary mb-3" onclick="abrirNuevo()">
-Nuevo usuario
+Nuevo tipo
 </button>
 
 <table class="table table-bordered table-hover">
 <thead class="table-dark">
 <tr>
-<th>Usuario</th>
 <th>Nombre</th>
-<th>Rol</th>
 <th>Estado</th>
 <th class="text-center">Acciones</th>
 </tr>
 </thead>
 <tbody>
 
-<?php while($u = mysqli_fetch_assoc($usuarios)){ ?>
+<?php while($t = mysqli_fetch_assoc($tipos)){ ?>
 <tr>
-<td><?= $u['usuario'] ?></td>
-<td><?= $u['nombre'] ?></td>
-<td><?= $u['rol'] ?></td>
+<td><?= $t['nombre_tipo'] ?></td>
 <td>
-<?php if($u['activo']==1){ ?>
+<?php if($t['activo']){ ?>
 <span class="badge bg-success">Activo</span>
 <?php } else { ?>
 <span class="badge bg-secondary">Inactivo</span>
@@ -84,32 +80,24 @@ Nuevo usuario
 
 <td class="text-center">
 
-<?php if($u['id_usuario'] != $_SESSION['id_usuario']){ ?>
-
 <button class="btn btn-sm btn-warning"
 onclick="abrirEditar(
-<?= $u['id_usuario'] ?>,
-'<?= htmlspecialchars($u['usuario'], ENT_QUOTES) ?>',
-'<?= htmlspecialchars($u['nombre'], ENT_QUOTES) ?>',
-'<?= $u['rol'] ?>'
+<?= $t['id_tipo'] ?>,
+'<?= htmlspecialchars($t['nombre_tipo'], ENT_QUOTES) ?>'
 )">
 Editar
 </button>
 
-<?php if($u['activo']==1){ ?>
+<?php if($t['activo']){ ?>
 <button class="btn btn-sm btn-danger"
-onclick="cambiarEstado(<?= $u['id_usuario'] ?>,0)">
+onclick="cambiarEstado(<?= $t['id_tipo'] ?>,0)">
 Desactivar
 </button>
 <?php } else { ?>
 <button class="btn btn-sm btn-success"
-onclick="cambiarEstado(<?= $u['id_usuario'] ?>,1)">
+onclick="cambiarEstado(<?= $t['id_tipo'] ?>,1)">
 Activar
 </button>
-<?php } ?>
-
-<?php } else { ?>
-<span class="badge bg-info">Tu usuario</span>
 <?php } ?>
 
 </td>
@@ -120,48 +108,29 @@ Activar
 </table>
 </div>
 
-<div class="modal fade" id="modalUsuario" tabindex="-1">
+<!-- MODAL -->
+<div class="modal fade" id="modalTipo" tabindex="-1">
 <div class="modal-dialog">
 <div class="modal-content">
 
 <div class="modal-header">
-<h5 class="modal-title">Usuario</h5>
+<h5 class="modal-title">Tipo de Acta</h5>
 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 
-<!-- Modal -->
 <div class="modal-body">
 
-<input type="hidden" id="id_usuario">
+<input type="hidden" id="id_tipo">
 
 <div class="mb-3">
-<label>Usuario</label>
-<input type="text" id="usuario" class="form-control">
-</div>
-
-<div class="mb-3">
-<label>Nombre</label>
-<input type="text" id="nombre" class="form-control">
-</div>
-
-<div class="mb-3">
-<label>Password</label>
-<input type="text" id="password" class="form-control">
-<small class="text-muted">Dejar vacío para no cambiar</small>
-</div>
-
-<div class="mb-3">
-<label>Rol</label>
-<select id="rol" class="form-select">
-<option value="usuario">Usuario</option>
-<option value="admin">Administrador</option>
-</select>
+<label>Nombre del tipo</label>
+<input type="text" id="nombre_tipo" class="form-control">
 </div>
 
 </div>
 
 <div class="modal-footer">
-<button class="btn btn-primary" onclick="guardarUsuario()">
+<button class="btn btn-primary" onclick="guardarTipo()">
 Guardar
 </button>
 </div>
@@ -171,6 +140,6 @@ Guardar
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/usuarios.js"></script>
+<script src="../js/tipos.js"></script>
 </body>
 </html>
