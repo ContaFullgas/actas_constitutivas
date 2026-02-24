@@ -3,11 +3,11 @@ require_once "../auth/admin_check.php";
 require_once "../config/db.php";
 
 $id_empresa = intval($_POST['id_empresa'] ?? 0);
-$tipo = trim($_POST['tipo'] ?? '');
+$tipo = intval($_POST['tipo'] ?? 0);
 $ubicacion = trim($_POST['ubicacion'] ?? '');
 
-if($id_empresa <= 0 || $tipo == '' || $ubicacion == ''){
-    echo "Todos los campos son obligatorios (excepto la foto).";
+if($id_empresa <= 0 || $tipo <= 0 || $ubicacion == ''){
+    echo "Todos los campos son obligatorios.";
     exit;
 }
 
@@ -46,8 +46,8 @@ if(isset($_FILES['foto']) && $_FILES['foto']['error'] == 0){
 
 /* Insertar */
 $sql = "INSERT INTO actas
-(id_empresa, tipo_acta, ubicacion_fisica, foto_portada)
-VALUES ($id_empresa, '$tipo', '$ubicacion', ".($fotoRuta ? "'$fotoRuta'" : "NULL").")";
+(id_empresa, id_tipo, ubicacion_fisica, foto_portada)
+VALUES ($id_empresa, $tipo, '$ubicacion', ".($fotoRuta ? "'$fotoRuta'" : "NULL").")";
 
 mysqli_query($conn, $sql);
 

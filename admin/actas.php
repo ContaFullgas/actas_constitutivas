@@ -4,9 +4,10 @@ require_once "../config/db.php";
 
 $empresas = mysqli_query($conn, "SELECT * FROM empresas");
 $actas = mysqli_query($conn, "
-    SELECT a.*, e.nombre_empresa 
-    FROM actas a 
+    SELECT a.*, e.nombre_empresa, t.nombre_tipo
+    FROM actas a
     JOIN empresas e ON a.id_empresa = e.id_empresa
+    LEFT JOIN tipos_acta t ON a.id_tipo = t.id_tipo
 ");
 ?>
 
@@ -81,7 +82,23 @@ $actas = mysqli_query($conn, "
 
                 <div class="col-md-4">
                     <label class="form-label">Tipo de acta</label>
-                    <input type="text" id="tipo" class="form-control" placeholder="Ej. Acta constitutiva">
+                    <select id="tipo" class="form-select">
+                        <option value="">Seleccionar tipo...</option>
+
+                        <?php
+                        $tipos = mysqli_query($conn,"
+                            SELECT * FROM tipos_acta
+                            WHERE activo = 1
+                            ORDER BY nombre_tipo ASC
+                        ");
+
+                        while($t = mysqli_fetch_assoc($tipos)){
+                        ?>
+                            <option value="<?= $t['id_tipo'] ?>">
+                                <?= $t['nombre_tipo'] ?>
+                            </option>
+                        <?php } ?>
+                    </select>
                 </div>
 
                 <div class="col-md-3">
@@ -140,7 +157,7 @@ $actas = mysqli_query($conn, "
                             </td>
 
                             <td><?= $a['nombre_empresa'] ?></td>
-                            <td><?= $a['tipo_acta'] ?></td>
+                            <td><?= $a['nombre_tipo'] ?? 'Sin tipo' ?></td>
                             <td><?= $a['ubicacion_fisica'] ?></td>
 
                             <td class="text-center">
