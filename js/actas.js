@@ -1,17 +1,17 @@
 function agregarActa(){
 
     let id_empresa = $("#empresa").val();
-    let tipo = $("#tipo").val().trim();
+    let id_tipo    = $("#tipo").val();   
     let ubicacion = $("#ubicacion").val().trim();
 
-    if(id_empresa === "" || tipo === "" || ubicacion === ""){
-        alert("Todos los campos son obligatorios (excepto la foto).");
+    if(id_empresa === "" || id_tipo === "" || ubicacion === ""){
+        alert("Todos los campos son obligatorios.");
         return;
     }
 
     let formData = new FormData();
     formData.append("id_empresa", id_empresa);
-    formData.append("tipo", tipo);
+    formData.append("id_tipo", id_tipo);
     formData.append("ubicacion", ubicacion);
 
     let foto = document.getElementById("foto").files[0];
@@ -49,13 +49,13 @@ function verImagen(src){
     modal.show();
 }
 
-function abrirEditarActa(id, id_empresa, tipo, ubicacion){
+function abrirEditarActa(id, id_empresa, id_tipo, ubicacion){
 
     $("#edit_id_acta").val(id);
-    $("#edit_tipo").val(tipo);
     $("#edit_ubicacion").val(ubicacion);
 
     $("#edit_empresa").val(id_empresa).trigger('change');
+    $("#edit_tipo").val(id_tipo);
 
     let modal = new bootstrap.Modal(
         document.getElementById("modalEditarActa")
@@ -68,10 +68,10 @@ function guardarEdicionActa(){
 
     let id = $("#edit_id_acta").val();
     let id_empresa = $("#edit_empresa").val();
-    let tipo = $("#edit_tipo").val().trim();
+    let id_tipo = $("#edit_tipo").val();
     let ubicacion = $("#edit_ubicacion").val().trim();
 
-    if(id_empresa === "" || tipo === "" || ubicacion === ""){
+    if(id_empresa === "" || id_tipo === "" || ubicacion === ""){
         alert("Todos los campos son obligatorios.");
         return;
     }
@@ -79,7 +79,7 @@ function guardarEdicionActa(){
     let formData = new FormData();
     formData.append("id", id);
     formData.append("id_empresa", id_empresa);
-    formData.append("tipo", tipo);
+    formData.append("id_tipo", id_tipo);
     formData.append("ubicacion", ubicacion);
 
     let foto = document.getElementById("edit_foto").files[0];

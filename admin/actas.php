@@ -166,7 +166,7 @@ $actas = mysqli_query($conn, "
                                     onclick="abrirEditarActa(
                                         <?= $a['id_acta'] ?>,
                                         <?= $a['id_empresa'] ?>,
-                                        '<?= htmlspecialchars($a['tipo_acta'], ENT_QUOTES) ?>',
+                                        <?= $a['id_tipo'] ?? 'null' ?>,
                                         '<?= htmlspecialchars($a['ubicacion_fisica'], ENT_QUOTES) ?>'
                                     )">
                                     Editar
@@ -240,8 +240,24 @@ $actas = mysqli_query($conn, "
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Tipo de acta</label>
-          <input type="text" id="edit_tipo" class="form-control">
+            <label class="form-label">Tipo de acta</label>
+                <select id="edit_tipo" class="form-select">
+                    <option value="">Seleccionar tipo...</option>
+
+                    <?php
+                    $tiposEdit = mysqli_query($conn,"
+                        SELECT * FROM tipos_acta
+                        WHERE activo = 1
+                        ORDER BY nombre_tipo ASC
+                    ");
+
+                    while($te = mysqli_fetch_assoc($tiposEdit)){
+                    ?>
+                        <option value="<?= $te['id_tipo'] ?>">
+                            <?= $te['nombre_tipo'] ?>
+                        </option>
+                    <?php } ?>
+                </select>
         </div>
 
         <div class="mb-3">

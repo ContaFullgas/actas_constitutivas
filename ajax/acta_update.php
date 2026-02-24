@@ -4,10 +4,10 @@ require_once "../config/db.php";
 
 $id = intval($_POST['id'] ?? 0);
 $id_empresa = intval($_POST['id_empresa'] ?? 0);
-$tipo = trim($_POST['tipo'] ?? '');
+$id_tipo = intval($_POST['id_tipo'] ?? 0);
 $ubicacion = trim($_POST['ubicacion'] ?? '');
 
-if($id <= 0 || $id_empresa <= 0 || $tipo == '' || $ubicacion == ''){
+if($id <= 0 || $id_empresa <= 0 || $id_tipo <= 0 || $ubicacion == ''){
     echo "Todos los campos son obligatorios.";
     exit;
 }
@@ -54,7 +54,7 @@ if(isset($_FILES['foto']) && $_FILES['foto']['error'] == 0){
 /* Actualizar datos */
 $sql = "UPDATE actas SET
         id_empresa = $id_empresa,
-        tipo_acta = '$tipo',
+        id_tipo = $id_tipo,
         ubicacion_fisica = '$ubicacion'
         $fotoSQL
         WHERE id_acta = $id";

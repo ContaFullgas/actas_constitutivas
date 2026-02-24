@@ -3,10 +3,10 @@ require_once "../auth/admin_check.php";
 require_once "../config/db.php";
 
 $id_empresa = intval($_POST['id_empresa'] ?? 0);
-$tipo = intval($_POST['tipo'] ?? 0);
-$ubicacion = trim($_POST['ubicacion'] ?? '');
+$id_tipo    = intval($_POST['id_tipo'] ?? 0);
+$ubicacion  = trim($_POST['ubicacion'] ?? '');
 
-if($id_empresa <= 0 || $tipo <= 0 || $ubicacion == ''){
+if($id_empresa <= 0 || $id_tipo <= 0 || $ubicacion == ''){
     echo "Todos los campos son obligatorios.";
     exit;
 }
@@ -20,6 +20,18 @@ $checkEmpresa = mysqli_query($conn, "
 
 if(mysqli_num_rows($checkEmpresa) == 0){
     echo "La empresa seleccionada no existe.";
+    exit;
+}
+
+/* Verificar que el tipo exista */
+$checkTipo = mysqli_query($conn, "
+    SELECT id_tipo 
+    FROM tipos_acta
+    WHERE id_tipo = $id_tipo
+");
+
+if(mysqli_num_rows($checkTipo) == 0){
+    echo "El tipo seleccionado no existe.";
     exit;
 }
 
@@ -47,7 +59,7 @@ if(isset($_FILES['foto']) && $_FILES['foto']['error'] == 0){
 /* Insertar */
 $sql = "INSERT INTO actas
 (id_empresa, id_tipo, ubicacion_fisica, foto_portada)
-VALUES ($id_empresa, $tipo, '$ubicacion', ".($fotoRuta ? "'$fotoRuta'" : "NULL").")";
+VALUES ($id_empresa, $id_tipo, '$ubicacion', ".($fotoRuta ? "'$fotoRuta'" : "NULL").")";
 
 mysqli_query($conn, $sql);
 
