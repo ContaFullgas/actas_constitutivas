@@ -39,11 +39,12 @@ $historial = mysqli_query($conn, "
         p.fecha_devolucion,
         u.nombre,
         u.usuario,
-        a.tipo_acta,
+        t.nombre_tipo,
         e.nombre_empresa
     FROM prestamos p
     JOIN usuarios u ON p.id_usuario = u.id_usuario
     JOIN actas a ON p.id_acta = a.id_acta
+    LEFT JOIN tipos_acta t ON a.id_tipo = t.id_tipo
     JOIN empresas e ON a.id_empresa = e.id_empresa
     $where
     ORDER BY p.fecha_solicitud DESC
@@ -176,7 +177,7 @@ $historial = mysqli_query($conn, "
                                 <small class="text-muted"><?= $h['usuario'] ?></small>
                             </td>
                             <td><?= $h['nombre_empresa'] ?></td>
-                            <td><?= $h['tipo_acta'] ?></td>
+                            <td><?= $h['nombre_tipo'] ?? 'Sin tipo' ?></td>
                             <td>
                                 <span class="badge bg-secondary">
                                     <?= $h['estado'] ?>

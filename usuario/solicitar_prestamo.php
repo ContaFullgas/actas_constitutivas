@@ -8,6 +8,7 @@ $actas = mysqli_query($conn, "
     SELECT 
         a.*,
         e.nombre_empresa,
+        t.nombre_tipo,
 
         /* Estado para el usuario actual */
         (
@@ -30,6 +31,7 @@ $actas = mysqli_query($conn, "
 
     FROM actas a
     JOIN empresas e ON a.id_empresa = e.id_empresa
+    LEFT JOIN tipos_acta t ON a.id_tipo = t.id_tipo
 ");
 
 
@@ -111,7 +113,7 @@ $actas = mysqli_query($conn, "
                                 <?php } ?>
                             </td>
                             <td><?= $a['nombre_empresa'] ?></td>
-                            <td><?= $a['tipo_acta'] ?></td>
+                            <td><?= $a['nombre_tipo'] ?? 'Sin tipo' ?></td>
                             <td><?= $a['ubicacion_fisica'] ?></td>
                             <td class="text-center">
 

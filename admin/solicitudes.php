@@ -9,11 +9,12 @@ $solicitudes = mysqli_query($conn, "
         p.fecha_solicitud,
         u.nombre,
         u.usuario,
-        a.tipo_acta,
+        t.nombre_tipo,
         e.nombre_empresa
     FROM prestamos p
     JOIN usuarios u ON p.id_usuario = u.id_usuario
     JOIN actas a ON p.id_acta = a.id_acta
+    LEFT JOIN tipos_acta t ON a.id_tipo = t.id_tipo
     JOIN empresas e ON a.id_empresa = e.id_empresa
     WHERE p.estado IN ('pendiente','devolucion_pendiente')
     ORDER BY p.fecha_solicitud DESC
@@ -91,7 +92,7 @@ $solicitudes = mysqli_query($conn, "
                             </td>
 
                             <td><?= $s['nombre_empresa'] ?></td>
-                            <td><?= $s['tipo_acta'] ?></td>
+                            <td><?= $s['nombre_tipo'] ?? 'Sin tipo' ?></td>
                             <td>
                                 <span class="badge bg-warning text-dark">
                                     <?= $s['estado'] ?>

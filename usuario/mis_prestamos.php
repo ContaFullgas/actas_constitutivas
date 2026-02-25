@@ -9,11 +9,12 @@ $prestamos = mysqli_query($conn, "
         p.id_prestamo,
         p.estado,
         p.fecha_prestamo,
-        a.tipo_acta,
+        t.nombre_tipo,
         a.ubicacion_fisica,
         e.nombre_empresa
     FROM prestamos p
     JOIN actas a ON p.id_acta = a.id_acta
+    LEFT JOIN tipos_acta t ON a.id_tipo = t.id_tipo
     JOIN empresas e ON a.id_empresa = e.id_empresa
     WHERE p.id_usuario = $id_usuario
       AND p.estado IN ('prestado','devolucion_pendiente')
@@ -82,7 +83,7 @@ $prestamos = mysqli_query($conn, "
                     <?php while($p = mysqli_fetch_assoc($prestamos)){ ?>
                         <tr>
                             <td><?= $p['nombre_empresa'] ?></td>
-                            <td><?= $p['tipo_acta'] ?></td>
+                            <td><?= $p['nombre_tipo'] ?? 'Sin tipo' ?></td>
                             <td><?= $p['ubicacion_fisica'] ?></td>
                             <td><?= $p['fecha_prestamo'] ?></td>
                             <td class="text-center">
