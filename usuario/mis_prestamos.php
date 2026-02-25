@@ -91,7 +91,7 @@ $prestamos = mysqli_query($conn, "
                             <?php if($p['estado'] == 'prestado'){ ?>
                                 <button class="btn btn-sm btn-warning"
                                     onclick="solicitarDevolucion(<?= $p['id_prestamo'] ?>)">
-                                    Solicitar devolución
+                                    Realizar devolución
                                 </button>
                             <?php } else { ?>
                                 <span class="badge bg-info text-dark">

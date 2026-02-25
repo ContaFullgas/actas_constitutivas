@@ -65,7 +65,7 @@ require_once "../auth/auth_check.php";
         <div class="col-md-4">
             <div class="card shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Mis préstamos</h5>
+                    <h5 class="card-title">Mis actas prestadas</h5>
                     <p class="card-text">
                         Consulta el estado de tus solicitudes y devoluciones.
                     </p>
