@@ -9,6 +9,7 @@ $solicitudes = mysqli_query($conn, "
         p.fecha_solicitud,
         u.nombre,
         u.usuario,
+        u.departamento,
         t.nombre_tipo,
         e.nombre_empresa
     FROM prestamos p
@@ -75,6 +76,7 @@ $solicitudes = mysqli_query($conn, "
                     <thead class="table-dark">
                         <tr>
                             <th>Usuario</th>
+                            <th>Departamento</th>
                             <th>Empresa</th>
                             <th>Acta</th>
                             <th>Estado</th>
@@ -90,6 +92,8 @@ $solicitudes = mysqli_query($conn, "
                                 <strong><?= $s['nombre'] ?></strong><br>
                                 <small class="text-muted"><?= $s['usuario'] ?></small>
                             </td>
+
+                            <td><?= $s['departamento'] ?></td>
 
                             <td><?= $s['nombre_empresa'] ?></td>
                             <td><?= $s['nombre_tipo'] ?? 'Sin tipo' ?></td>

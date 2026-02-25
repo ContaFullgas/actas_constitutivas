@@ -4,6 +4,7 @@ require_once "../config/db.php";
 
 /* Filtros */
 $usuario = $_GET['usuario'] ?? '';
+$departamento = $_GET['departamento'] ?? '';
 $estado  = $_GET['estado'] ?? '';
 $empresa = $_GET['empresa'] ?? '';
 $desde   = $_GET['desde'] ?? '';
@@ -13,6 +14,9 @@ $where = "WHERE 1=1";
 
 if($usuario != ''){
     $where .= " AND u.nombre LIKE '%$usuario%'";
+}
+if($departamento != ''){
+    $where .= " AND u.departamento = '$departamento'";
 }
 if($estado != ''){
     $where .= " AND p.estado = '$estado'";
@@ -39,6 +43,7 @@ $historial = mysqli_query($conn, "
         p.fecha_devolucion,
         u.nombre,
         u.usuario,
+        u.departamento,
         t.nombre_tipo,
         e.nombre_empresa
     FROM prestamos p
@@ -119,6 +124,25 @@ $historial = mysqli_query($conn, "
                 </div>
 
                 <div class="col-md-3">
+                    <select name="departamento" class="form-select">
+                        <option value="">Todos los departamentos</option>
+                        <?php
+                        $deps = [
+                            'Contabilidad',
+                            'Facturación',
+                            'Sistemas',
+                            'Nominas',
+                            'Fiscal'
+                        ];
+                        foreach($deps as $d){
+                            $sel = ($departamento == $d) ? 'selected' : '';
+                            echo "<option $sel value='$d'>$d</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
                     <select name="empresa" class="form-select">
                         <option value="">Todas las empresas</option>
                         <?php while($emp = mysqli_fetch_assoc($empresas)){ ?>
@@ -160,6 +184,7 @@ $historial = mysqli_query($conn, "
                     <thead class="table-dark">
                         <tr>
                             <th>Usuario</th>
+                            <th>Departamento</th>
                             <th>Empresa</th>
                             <th>Acta</th>
                             <th>Estado</th>
@@ -176,6 +201,7 @@ $historial = mysqli_query($conn, "
                                 <strong><?= $h['nombre'] ?></strong><br>
                                 <small class="text-muted"><?= $h['usuario'] ?></small>
                             </td>
+                            <td><?= $h['departamento'] ?></td>
                             <td><?= $h['nombre_empresa'] ?></td>
                             <td><?= $h['nombre_tipo'] ?? 'Sin tipo' ?></td>
                             <td>
