@@ -39,6 +39,7 @@ $actas = mysqli_query($conn, "
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Solicitar préstamo</title>
@@ -49,150 +50,149 @@ $actas = mysqli_query($conn, "
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
+
 <body class="bg-light">
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
 
-        <div class="navbar-nav">
-            <a href="empresas.php" class="nav-link">Inicio</a>
-            <a href="solicitar_prestamo.php" class="nav-link active">Solicitar prestamo</a>
-            <a href="mis_prestamos.php" class="nav-link">Mis préstamos</a>
-            <a href="historial.php" class="nav-link ">Historial</a>
+            <div class="navbar-nav">
+                <a href="empresas.php" class="nav-link">Inicio</a>
+                <a href="solicitar_prestamo.php" class="nav-link active">Solicitar prestamo</a>
+                <a href="mis_prestamos.php" class="nav-link">Mis préstamos</a>
+                <a href="historial.php" class="nav-link ">Historial</a>
+            </div>
+
+            <span class="navbar-brand ms-2">Control de Actas</span>
+
+            <div class="d-flex text-white">
+                <span class="me-3">
+                    <?php echo $_SESSION['usuario']; ?>
+                </span>
+                <a href="../auth/logout.php" class="btn btn-outline-light btn-sm">
+                    Cerrar sesión
+                </a>
+            </div>
+
         </div>
+    </nav>
 
-        <span class="navbar-brand ms-2">Control de Actas</span>
+    <!-- CONTENIDO -->
+    <div class="container mt-4">
 
-        <div class="d-flex text-white">
-            <span class="me-3">
-                <?php echo $_SESSION['usuario']; ?>
-            </span>
-            <a href="../auth/logout.php" class="btn btn-outline-light btn-sm">
-                Cerrar sesión
-            </a>
-        </div>
+        <div class="card shadow-sm">
+            <div class="card-body">
 
-    </div>
-</nav>
+                <h4 class="mb-3">Solicitar préstamo de acta</h4>
 
-<!-- CONTENIDO -->
-<div class="container mt-4">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Portada</th>
+                                <th>Empresa</th>
+                                <th>Tipo de acta</th>
+                                <th>Ubicación</th>
+                                <th class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+                            <?php while ($a = mysqli_fetch_assoc($actas)) { ?>
+                                <tr>
+                                    <!-- TD para fotografía de acta -->
+                                    <td class="text-center">
+                                        <?php if ($a['foto_portada']) { ?>
+                                            <img src="../<?= $a['foto_portada'] ?>" class="img-thumbnail"
+                                                style="width:60px; cursor:pointer;"
+                                                onclick="verImagen('../<?= $a['foto_portada'] ?>')" alt="Portada acta">
+                                        <?php } else { ?>
+                                            <span class="text-muted">Sin foto</span>
+                                        <?php } ?>
+                                    </td>
+                                    <td><?= $a['nombre_empresa'] ?></td>
+                                    <td><?= $a['nombre_tipo'] ?? 'Sin tipo' ?></td>
+                                    <td><?= $a['ubicacion_fisica'] ?></td>
+                                    <td class="text-center" id="accion_<?= $a['id_acta'] ?>">
 
-            <h4 class="mb-3">Solicitar préstamo de acta</h4>
+                                        <?php
+                                        if ($a['estado_global'] == null) {
+                                            ?>
+                                            <button class="btn btn-sm btn-primary"
+                                                onclick="solicitarPrestamo(<?= $a['id_acta'] ?>)">
+                                                Solicitar
+                                            </button>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Portada</th>
-                            <th>Empresa</th>
-                            <th>Tipo de acta</th>
-                            <th>Ubicación</th>
-                            <th class="text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                                            <?php
+                                        } else if ($a['estado_usuario']) {
 
-                    <?php while($a = mysqli_fetch_assoc($actas)){ ?>
-                        <tr>
-                            <!-- TD para fotografía de acta -->
-                            <td class="text-center">
-                                <?php if($a['foto_portada']){ ?>
-                                    <img
-                                        src="../<?= $a['foto_portada'] ?>"
-                                        class="img-thumbnail"
-                                        style="width:60px; cursor:pointer;"
-                                        onclick="verImagen('../<?= $a['foto_portada'] ?>')"
-                                        alt="Portada acta">
-                                <?php } else { ?>
-                                    <span class="text-muted">Sin foto</span>
-                                <?php } ?>
-                            </td>
-                            <td><?= $a['nombre_empresa'] ?></td>
-                            <td><?= $a['nombre_tipo'] ?? 'Sin tipo' ?></td>
-                            <td><?= $a['ubicacion_fisica'] ?></td>
-                            <td class="text-center">
+                                            if ($a['estado_usuario'] == 'pendiente') {
+                                                ?>
+                                                    <span class="badge bg-warning text-dark">
+                                                        Solicitud pendiente
+                                                    </span>
+                                                <?php
+                                            } else if ($a['estado_usuario'] == 'prestado') {
+                                                ?>
+                                                        <span class="badge bg-success">
+                                                            Acta prestada
+                                                        </span>
+                                                <?php
+                                            } else if ($a['estado_usuario'] == 'devolucion_pendiente') {
+                                                ?>
+                                                            <span class="badge bg-info text-dark">
+                                                                Devolución pendiente
+                                                            </span>
+                                                <?php
+                                            }
 
-                            <?php
-                                if ($a['estado_global'] == null) {
-                                ?>
-                                    <button class="btn btn-sm btn-primary"
-                                        onclick="solicitarPrestamo(<?= $a['id_acta'] ?>)">
-                                        Solicitar
-                                    </button>
+                                        } else {
+                                            ?>
+                                                <span class="badge bg-secondary">
+                                                    No disponible
+                                                </span>
+                                            <?php
+                                        }
+                                        ?>
 
-                                <?php
-                                } else if ($a['estado_usuario']) {
-
-                                    if ($a['estado_usuario'] == 'pendiente') {
-                                ?>
-                                        <span class="badge bg-warning text-dark">
-                                            Solicitud pendiente
-                                        </span>
-                                <?php
-                                    } else if ($a['estado_usuario'] == 'prestado') {
-                                ?>
-                                        <span class="badge bg-success">
-                                            Acta prestada
-                                        </span>
-                                <?php
-                                    } else if ($a['estado_usuario'] == 'devolucion_pendiente') {
-                                ?>
-                                        <span class="badge bg-info text-dark">
-                                            Devolución pendiente
-                                        </span>
-                                <?php
-                                    }
-
-                                } else {
-                                ?>
-                                    <span class="badge bg-secondary">
-                                        No disponible
-                                    </span>
-                                <?php
-                                }
-                                ?>
-
-                                </td>
+                                    </td>
                                 </tr>
                             <?php } ?>
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="msg" class="mt-3"></div>
+
             </div>
+        </div>
 
-            <div id="msg" class="mt-3"></div>
+    </div>
 
+    <!-- MODAL VER IMAGEN -->
+    <div class="modal fade" id="modalImagen" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Portada del acta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <img id="imgGrande" src="" class="img-fluid rounded">
+                </div>
+
+            </div>
         </div>
     </div>
 
-</div>
-
-<!-- MODAL VER IMAGEN -->
-<div class="modal fade" id="modalImagen" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h5 class="modal-title">Portada del acta</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
-      <div class="modal-body text-center">
-        <img id="imgGrande" src="" class="img-fluid rounded">
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/prestamos_usuario.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/prestamos_usuario.js"></script>
 
 
 </body>
+
 </html>
