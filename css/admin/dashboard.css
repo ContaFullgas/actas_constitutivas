@@ -1,0 +1,255 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root, [data-theme="light"] {
+            --bg:        #F4F5F7;
+            --surface:   #FFFFFF;
+            --border:    #E2E5EA;
+            --text-main: #1A1D23;
+            --text-soft: #6B7280;
+            --nav-bg:    #FFFFFF;
+            --nav-border:#E2E5EA;
+        }
+
+        [data-theme="dark"] {
+            --bg:        #0F1117;
+            --surface:   #1A1D27;
+            --border:    #2A2D3A;
+            --text-main: #F0F2F8;
+            --text-soft: #7A8090;
+            --nav-bg:    #14161F;
+            --nav-border:#22253A;
+        }
+
+        :root {
+            --c-empresas:    #2563EB;
+            --c-actas:       #0F766E;
+            --c-tipos:       #7C3AED;
+            --c-solicitudes: #D97706;
+            --c-historial:   #0369A1;
+            --c-usuarios:    #BE185D;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* ── NAVBAR ─────────────────────────────────────── */
+        nav {
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--nav-border);
+            height: 56px;
+            display: flex;
+            align-items: center;
+            padding: 0 32px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .nav-brand {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-brand::before {
+            content: '';
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #2563EB;
+            display: block;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-user {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-soft);
+            font-family: 'DM Mono', monospace;
+        }
+
+        .btn-logout {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-soft);
+            border: 1px solid var(--border);
+            background: transparent;
+            padding: 5px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .btn-logout:hover {
+            color: var(--text-main);
+            background: var(--bg);
+        }
+
+        .btn-theme {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
+            color: var(--text-soft);
+            flex-shrink: 0;
+        }
+
+        .btn-theme:hover { background: var(--bg); color: var(--text-main); }
+
+        .btn-theme svg {
+            width: 16px; height: 16px;
+            fill: none; stroke: currentColor;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        .icon-sun  { display: none; }
+        .icon-moon { display: block; }
+        [data-theme="dark"] .icon-sun  { display: block; }
+        [data-theme="dark"] .icon-moon { display: none; }
+
+        /* ── CONTENIDO ──────────────────────────────────── */
+        .container {
+            max-width: 900px;
+            margin: 48px auto;
+            padding: 0 24px;
+        }
+
+        .welcome { margin-bottom: 32px; }
+
+        .welcome h1 {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .welcome p {
+            font-size: 14px;
+            color: var(--text-soft);
+        }
+
+        /* ── GRID ───────────────────────────────────────── */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .module-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 24px 22px 20px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+
+            /* ── Opción B aplicada ── */
+            border: 1.5px solid #C0C5CF;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+
+            transition: box-shadow 0.2s ease, transform 0.2s ease,
+                        border-color 0.2s ease, background 0.3s ease;
+        }
+
+        /* Dark mode: borde original */
+        [data-theme="dark"] .module-card {
+            border: 1px solid var(--border);
+            box-shadow: none;
+        }
+
+        .module-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--mod-color);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+
+        .module-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .module-card:hover::after { transform: scaleX(1); }
+
+        .mod-icon {
+            width: 38px; height: 38px;
+            border-radius: 9px;
+            background: color-mix(in srgb, var(--mod-color) 12%, transparent);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .mod-icon svg {
+            width: 18px; height: 18px;
+            stroke: var(--mod-color);
+            fill: none; stroke-width: 1.8;
+            stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        .mod-label { font-size: 14px; font-weight: 600; letter-spacing: -0.2px; }
+        .mod-desc  { font-size: 12px; color: var(--text-soft); margin-top: -8px; }
+
+        .mod-empresas    { --mod-color: var(--c-empresas); }
+        .mod-actas       { --mod-color: var(--c-actas); }
+        .mod-tipos       { --mod-color: var(--c-tipos); }
+        .mod-solicitudes { --mod-color: var(--c-solicitudes); }
+        .mod-historial   { --mod-color: var(--c-historial); }
+        .mod-usuarios    { --mod-color: var(--c-usuarios); }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome                  { animation: fadeUp 0.4s ease both; }
+        .module-card:nth-child(1) { animation: fadeUp 0.4s 0.05s ease both; }
+        .module-card:nth-child(2) { animation: fadeUp 0.4s 0.10s ease both; }
+        .module-card:nth-child(3) { animation: fadeUp 0.4s 0.15s ease both; }
+        .module-card:nth-child(4) { animation: fadeUp 0.4s 0.20s ease both; }
+        .module-card:nth-child(5) { animation: fadeUp 0.4s 0.25s ease both; }
+        .module-card:nth-child(6) { animation: fadeUp 0.4s 0.30s ease both; }
+
+        /* ══════════════════════════════════════════════════
+           TABLET  (≤ 900px) — 2 columnas
+        ══════════════════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .container { margin: 32px auto; }
+            .modules-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ══════════════════════════════════════════════════
+           MÓVIL  (≤ 640px) — 1 columna
+        ══════════════════════════════════════════════════ */
+        @media (max-width: 640px) {
+            nav { padding: 0 16px; }
+            .nav-user { display: none; }
+            .container { margin: 20px auto; padding: 0 16px; }
+            .welcome h1 { font-size: 18px; }
+            .modules-grid { grid-template-columns: 1fr; }
+            .module-card { padding: 18px 16px; flex-direction: row; align-items: center; gap: 16px; }
+            .module-card::after { width: 3px; height: 100%; top: 0; left: 0; right: unset; bottom: unset; transform: scaleY(0); transform-origin: top; }
+            .module-card:hover::after { transform: scaleY(1); }
+        }
