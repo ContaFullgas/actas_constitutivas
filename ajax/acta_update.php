@@ -27,10 +27,10 @@ $fotoSQL = "";
 /* Si se sube nueva imagen */
 if(isset($_FILES['foto']) && $_FILES['foto']['error'] == 0){
 
-    $permitidos = ['image/jpeg','image/png'];
+    $permitidos = ['image/jpeg', 'image/png', 'image/webp'];
 
     if(!in_array($_FILES['foto']['type'], $permitidos)){
-        echo "Formato de imagen no permitido.";
+        echo "Formato de imagen no permitido. Use JPG, PNG o WebP.";
         exit;
     }
 

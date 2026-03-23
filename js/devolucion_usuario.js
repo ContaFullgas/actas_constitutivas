@@ -1,17 +1,22 @@
-function solicitarDevolucion(id){
-    if(!confirm("¿Deseas solicitar la devolución de esta acta?")){
-        return;
-    }
+function solicitarDevolucion(id) {
+    showConfirm(
+        "¿Solicitar devolución?",
+        "Se enviará la solicitud de devolución al administrador.",
+        function () {
+            $.post("../ajax/solicitar_devolucion.php",
+                { id_prestamo: id },
+                function (resp) {
+                    showToast(resp, "success");
 
-    $.post("../ajax/solicitar_devolucion.php",
-        { id_prestamo: id },
-        function(resp){
-            $("#msg").html(`
-                <div class="alert alert-success">
-                    ${resp}
-                </div>
-            `);
-            setTimeout(() => location.reload(), 800);
+                    const badge = `<span class="badge-status badge-devolucion">Devolución pendiente</span>`;
+                    $("#accion_" + id).html(badge);
+                    $("#accion_mob_" + id).html(badge);
+
+                    setTimeout(() => location.reload(), 1200);
+                }
+            );
         }
     );
 }
+
+
