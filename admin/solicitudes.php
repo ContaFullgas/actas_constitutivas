@@ -178,8 +178,8 @@ $solicitudes = mysqli_query($conn, "
                         <td><?= $s['fecha_solicitud'] ?></td>
                         <td class="center">
                             <?php if($s['estado'] == 'pendiente'){ ?>
-                                <button class="btn-authorize" onclick="autorizarPrestamo(<?= $s['id_prestamo'] ?>)">Autorizar</button>
-                                <button class="btn-reject"    onclick="rechazarPrestamo(<?= $s['id_prestamo'] ?>)">Rechazar</button>
+                                <button class="btn-authorize" onclick="autorizarPrestamo(<?= $s['id_prestamo'] ?>)">Autorizar prestamo</button>
+                                <button class="btn-reject"    onclick="rechazarPrestamo(<?= $s['id_prestamo'] ?>)">Rechazar prestamo</button>
                             <?php } ?>
                             <?php if($s['estado'] == 'devolucion_pendiente'){ ?>
                                 <button class="btn-return" onclick="autorizarDevolucion(<?= $s['id_prestamo'] ?>)">Autorizar devolución</button>
@@ -212,8 +212,8 @@ $solicitudes = mysqli_query($conn, "
                     <div class="solicitud-card-meta">Fecha: <span><?= $s['fecha_solicitud'] ?></span></div>
                     <div class="solicitud-card-actions">
                         <?php if($s['estado'] == 'pendiente'){ ?>
-                            <button class="btn-authorize" onclick="autorizarPrestamo(<?= $s['id_prestamo'] ?>)">Autorizar</button>
-                            <button class="btn-reject"    onclick="rechazarPrestamo(<?= $s['id_prestamo'] ?>)">Rechazar</button>
+                            <button class="btn-authorize" onclick="autorizarPrestamo(<?= $s['id_prestamo'] ?>)">Autorizar prestamo</button>
+                            <button class="btn-reject"    onclick="rechazarPrestamo(<?= $s['id_prestamo'] ?>)">Rechazar prestamo</button>
                         <?php } ?>
                         <?php if($s['estado'] == 'devolucion_pendiente'){ ?>
                             <button class="btn-return" onclick="autorizarDevolucion(<?= $s['id_prestamo'] ?>)">Autorizar devolución</button>
@@ -305,7 +305,7 @@ $solicitudes = mysqli_query($conn, "
         document.getElementById('confirmDesc').textContent  = desc;
         const overlay = document.getElementById('confirmOverlay');
         overlay.classList.add('show');
-        document.getElementById('confirmOkBtn').onclick = function() { cerrarConfirm(); onOk(); };
+        document.getElementById('confirmOkBtn').onclick = function() { onOk(); cerrarConfirm();  };
     }
 
     function cerrarConfirm() {
